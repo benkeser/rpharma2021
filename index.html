@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>R at Warp Speed:</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="David Benkeser, PhD MPH   Emory University  Department of Biostatistics and Bioinformatics " />
+    <script src="index_files/header-attrs-2.10/header-attrs.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# R at Warp Speed:
+## Reproducible coding for COVID vaccine trials
+### David Benkeser, PhD MPH<br> <span style="font-size: 75%;"> Emory University<br> Department of Biostatistics and Bioinformatics </span>
+### <a href = 'https://twitter.com/biosbenk' style = 'color: white;'><span class="citation">@biosbenk</span></a> <br> <a href='https://bit.ly/warpspeedr' style='color: white;'>bit.ly/warpspeedr</a> <br>
+
+---
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 22px
+}
+&lt;/style&gt;
+
+## Acknowledgments
+
+.pull-left[.tiny[
+__Leadership__
+* Peter Gilbert (FHCRC, UW)
+* Youyi Fong (FHCRC)
+
+__CoVPN Correlates Team__
+* Chenchen Yu
+* Yiwen Lu
+* Ellis Hughes
+* Lars van der Laan
+* Kendrick Li
+* Brian Simpkins
+* Di Lu (BARDA)
+
+]]
+
+.pull-right[.tiny[
+__Moderna Biostatistics__
+* Weiping Deng
+* Honghong Zhou
+* Shu Han
+
+__Government__
+* Dean Follmann (NIAID)
+* James Zhou (BARDA)
+
+]
+]
+
+---
+
+&lt;img src="img/owsprocess.jpeg" width="6557" height="575px" style="display: block; margin: auto;" /&gt;
+
+.small[from [DoD](https://www.defense.gov/Explore/Spotlight/Coronavirus/Operation-Warp-Speed/)]
+
+???
+
+Two main ways companies can interface with OWS: 
+* purchasing/manufacturing funding
+* OWS-run trials (agreements through BARDA @ NIH)
+
+---
+
+## COVID-19 Prevention Network
+
+[CoVPN](https://www.coronaviruspreventionnetwork.org/) was [formed by NIAID](https://www.nih.gov/news-events/news-releases/nih-launches-clinical-trials-network-test-covid-19-vaccines-other-prevention-tools) to establish a unified clinical trial network for evaluating vaccines and monoclonal antibodies.
+
+* pooling of resources across __four existing trials networks__
+* clinical sites, laboratories, recruitment specialists, statisticians, ...
+
+.pull-left[
+
+&lt;img src="img/covpn.png" width="250px" height="250px" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[__Statisticians__ advise on: 
+
+* primary trial __design and analysis__
+* sequential __efficacy monitoring__
+* __safety__ monitoring
+* DSMB/FDA comments
+* __immune correlates__
+
+]
+
+---
+
+## Correlates of risk/protection
+
+Two, interrelated goals of correlates analysis are to 
+
+* identify/validate possible __surrogate endpoints__;
+* understand __protective mechanisms__ of vaccines. 
+
+If an __immune correlate__ is established to __reliably predict vaccine efficacy__, then subsequent efficacy trials may use the CoP as the __primary endpoint__. 
+
+__Accelerates approval__ of
+
+* existing vaccines in __different populations__ (e.g., children);
+* __new vaccines__ in the same class.
+
+---
+
+## Immunogenicity
+
+.pull-left[
+
+&lt;img src="img/immunotab.png" width="300px" height="300px" style="display: block; margin: auto;" /&gt;
+
+* Descriptive tables 
+* E.g., sampling strata and cases
+
+]
+
+.pull-right[
+
+&lt;img src="img/scatter.png" width="300px" height="300px" style="display: block; margin: auto;" /&gt;
+
+* Descriptive plots of marker distributions
+* E.g., bivariate scatter plots
+
+]
+
+
+---
+
+## Correlates of risk
+
+
+.pull-left[
+
+&lt;img src="img/cor1.png" width="250px" height="250px" style="display: block; margin: auto;" /&gt;
+
+* Risk given immune response + baseline covariate adjustment
+* E.g., Cox model
+
+]
+
+.pull-right[
+
+&lt;img src="img/cor2.png" width="400px" height="250px" /&gt;
+
+* Machine learning prediction using different sets of immune responses.\*
+
+]
+
+&lt;br&gt; &lt;br&gt; 
+
+.small[\* [Neidich et al (2019)](https://doi.org/10.1172/JCI126391)]
+
+---
+
+## Correlates considerations
+
+From the outset, we knew that this science would be:
+
+* __heavily scrutinized__
+
+  * need for transparent, open science.
+
+* __high impact__
+
+  * need to "get it right"
+
+* __reproduced for many trials__
+
+  * five USG-funded trials + others
+
+---
+
+## Correlates challenges
+
+From the outset, we recognized there would be challenges:
+
+* .red[complex statistical methodology]
+
+  * different analysts need to implement different analyses
+
+* .red[difficult-to-reproduce methodology]
+
+  * ensemble machine learning with cross-validation
+
+* .red[regulatory compliant computing framework]
+
+  * FDA interested in results
+
+* .red[under extreme time pressure]
+
+  * information needed ASAP to inform policy
+
+---
+
+## Correlates challenges
+
+For Moderna, we also faced the key challenge that we had
+
+.center[.huge[.red[No direct access to data!]]]
+
+.center[.huge[😱]]
+
+---
+
+class: inverse, center, middle
+
+.large[*We're not building the airplane while flying it; we're sewing the parachute while falling.*]
+
+*Unknown, 2021*
+
+---
+
+## Open science
+
+Early on, we posted a version-controlled SAP [online](https://figshare.com/articles/online_resource/CoVPN_COVID-19_Vaccine_Efficacy_Trial_Immune_Correlates_SAP/13198595).
+
+.center[
+
+&lt;img src="img/sap.png" width="400px" height="150px" /&gt;
+
+]
+
+Open software development on GitHub.
+* [CoVPN/correlates_reporting](https://github.com/CoVPN/correlates_reporting_usgcove_archive)
+* 3,042 commits and counting... 😎
+
+&lt;br&gt;
+
+✅ need for transparent, open science
+
+---
+
+## Project organization
+
+.center[.red[*File organization and naming are powerful weapons against chaos.*]]
+.center[Jenny Bryan]
+
+&lt;br&gt; 
+
+.center[
+
+&lt;img src="img/organization.png" width="500px" height="350px" /&gt;
+
+]
+
+---
+
+## Project organization
+
+Loose guidelines for __sub-directory structure__.
+
+* consistency vs. expediency
+
+Each sub-directory produces a __child R Markdown report__.
+
+* `Makefile` used to document dependencies
+
+Master `Makefile` and `bookdown` run analyses and __produce final reports__.
+
+&lt;br&gt; 
+
+✅ different analysts need to implement different analyses
+
+✅ under extreme time pressure
+
+---
+
+## Code verification
+
+.red[High importance results] underwent double programming.
+
+* original programmer = generate specification document
+* independent programmer = generate same results
+* confirm identical results
+
+[Ellis Hughes](https://twitter.com/ellis_hughes) was instrumental in this effort.
+
+Double programming included __ensemble machine learning__ results!
+
+✅ need to "get it right"
+
+✅ difficult-to-reproduce methodology
+
+---
+
+## Remote computing
+
+Approaches used to prepare for Moderna analysis:
+
+* "Practice" data set for local development
+
+  * Detailed specifications given to Moderna stats to align data formatting, definitions, etc...
+
+* `R` package control using [`{renv}`](https://rstudio.github.io/renv/index.html)
+
+  * 💯
+
+* Continuous integration using [Travis CI](https://www.travis-ci.com/)
+  
+  * configure environment to be "Moderna"-like
+  * automated report builds on practice data, pushed back to GitHub 
+
+---
+
+class: inverse, center, middle
+
+.large[*You just need to type "make" and everything will build automatically!*]
+
+*Me, a foolish optimist, early 2021*
+
+
+---
+
+class: inverse, middle
+
+&lt;blockquote class="twitter-tweet"&gt;&lt;p lang="en" dir="ltr"&gt;Sure, being bitten by a thousand fire ants is bad, but have you tried debugging someone else’s code... over WebEx?!&lt;/p&gt;&amp;mdash; David Benkeser (@biosbenk) &lt;a href="https://twitter.com/biosbenk/status/1387486297930018818?ref_src=twsrc%5Etfw"&gt;April 28, 2021&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+
+.center[ *Me, more of a realist, April 2021*]
+
+---
+
+## Happy endings
+
+After many hours, and with great patience from Weiping Deng, we were able to get the report to compile.
+
+* 1129 pages in total 😦
+
+A preprint is available on [medRxiv](https://www.medrxiv.org/content/10.1101/2021.08.09.21261290v1)
+
+* doi: 10.1101/2021.08.09.21261290v1
+* Currently under revision at *Science*
+
+
+---
+
+## Looking forward
+
+❓❓ reproduced for many trials ❓❓
+
+Code is being __generalized__ to adapt to additional trials
+
+* A more [general correlates reporting](https://github.com/CoVPN/correlates_reporting2) process
+* __Custom configurations__ depending on trial specifications
+
+Analyses in the pipeline:
+
+* HVTN 705 (HIV vaccine)
+* Janssen (Johnson and Johnson) COVID
+* AstraZeneca, SinoVac, CureVac, NovaVax, Sanofi-Pasteur
+
+---
+
+## Lessons learned
+
+* Standardizing computing architectures is __relatively straightforward__. .red[Standardizing data formatting/processing is not].
+
+* .red[Code defensively]: check for missing values, sanity check inputs, ...
+
+* .red[Continuous integration] is your (best) friend as a code supervisor.
+
+* Always a difficult tension between .red[speed vs. quality coding].
+
+---
+
+class: center, inverse
+background-image: url("img/worldseries.jpeg")
+background-position: center
+background-size: cover
+
+.huge[.white[Questions?]]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create();
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
